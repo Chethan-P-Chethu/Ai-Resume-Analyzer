@@ -8,9 +8,11 @@ import {
   Copy,
   FileText,
   ListChecks,
+  Menu,
   ShieldCheck,
   Sparkles,
-  Target
+  Target,
+  X
 } from 'lucide-react'
 
 import { analyzeResume, analyzeCompare } from './api'
@@ -202,6 +204,13 @@ export default function App() {
     structure: true,
     content: true
   })
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const handleFeatureChange = (feature) => {
+    setActiveFeature(feature)
+    // Close sidebar on mobile after selecting a feature
+    setSidebarOpen(false)
+  }
 
   const score = useMemo(() => data?.overall_score ?? 0, [data])
   const scoreBreakdown = useMemo(() => data?.scores || {}, [data])
@@ -337,11 +346,38 @@ export default function App() {
         <div className="absolute right-[-220px] top-[120px] h-[520px] w-[520px] rounded-full bg-gradient-to-b from-emerald-500/20 to-emerald-500/0 blur-3xl" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+        {/* Mobile Menu Button - Relative to container, scrolls with page */}
+        <div className="lg:hidden absolute top-4 left-0 z-50">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="rounded-xl border border-white/10 bg-slate-950/50 p-3 text-white shadow-lg backdrop-blur-sm"
+          >
+            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+
+        {/* Mobile Sidebar Overlay - Only covers content, doesn't interfere with main content */}
+        {sidebarOpen && (
+          <>
+            <div 
+              className="lg:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm"
+              onClick={() => setSidebarOpen(false)}
+            />
+            <div className="lg:hidden fixed inset-y-0 left-0 z-40 w-64 bg-slate-950/95 backdrop-blur-sm overflow-y-auto">
+              <div className="p-4">
+                <Sidebar activeFeature={activeFeature} onFeatureChange={handleFeatureChange} />
+              </div>
+            </div>
+          </>
+        )}
+
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <div className="w-full lg:w-64 lg:flex-shrink-0">
-            <Sidebar activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+          {/* Desktop Sidebar - Always visible on large screens */}
+          <div className="hidden lg:block w-full lg:w-64 lg:flex-shrink-0">
+            <Sidebar activeFeature={activeFeature} onFeatureChange={handleFeatureChange} />
           </div>
+          
           <div className="flex-1 min-w-0">
             {activeFeature === 'analyze' && (
               <div>
@@ -385,7 +421,7 @@ export default function App() {
                     >
                       <div className="space-y-5">
                         <button
-                          onClick={onAnalyze}
+                          onClick={() => onAnalyze()}
                           disabled={loading}
                           className="w-full rounded-xl bg-gradient-to-r from-sky-500 via-indigo-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold text-white shadow-soft hover:from-sky-400 hover:via-indigo-400 hover:to-fuchsia-400 disabled:cursor-not-allowed disabled:opacity-60"
                         >
@@ -955,7 +991,7 @@ export default function App() {
                     >
                       <div className="space-y-5">
                         <button
-                          onClick={onAnalyzeCompare}
+                          onClick={() => onAnalyzeCompare()}
                           disabled={loading || !file || !file2}
                           className="w-full rounded-xl bg-gradient-to-r from-sky-500 via-indigo-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold text-white shadow-soft hover:from-sky-400 hover:via-indigo-400 hover:to-fuchsia-400 disabled:cursor-not-allowed disabled:opacity-60"
                         >
