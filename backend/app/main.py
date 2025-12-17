@@ -47,7 +47,16 @@ def _extract_text_from_pdf(file_bytes: bytes) -> str:
         raise ValueError(f"Failed to parse PDF: {e}")
 
 
-@app.post("/api/analyze")
+@app.route('/api/health')
+def health_check():
+    return jsonify({
+        'status': 'healthy',
+        'message': 'AI Resume Analyzer API is running',
+        'version': '1.0.0'
+    })
+
+
+@app.route('/api/analyze', methods=['POST'])
 def analyze():
     job_title = (request.form.get("job_title") or "").strip()
     job_description = (request.form.get("job_description") or "").strip()
@@ -91,3 +100,7 @@ def analyze():
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8000, debug=True)
+
+# Production WSGI entry point
+def handler(environ, start_response):
+    return app(environ, start_response)

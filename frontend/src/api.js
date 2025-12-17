@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000'
+const API_BASE_URL = import.meta.env.PROD 
+  ? '/api'  // In production, use same domain with /api prefix
+  : 'http://127.0.0.1:8000/api'
 
 export async function analyzeResume({ jobTitle, jobDescription, file }) {
   const fd = new FormData()
@@ -8,7 +10,7 @@ export async function analyzeResume({ jobTitle, jobDescription, file }) {
     fd.append('job_description', jobDescription)
   }
 
-  const res = await fetch(`${API_BASE}/api/analyze`, {
+  const res = await fetch(`${API_BASE_URL}/analyze`, {
     method: 'POST',
     body: fd
   })
@@ -43,11 +45,11 @@ export async function analyzeCompare({ jobTitle, jobDescription, file1, file2 })
   }
 
   const [res1, res2] = await Promise.all([
-    fetch(`${API_BASE}/api/analyze`, {
+    fetch(`${API_BASE_URL}/analyze`, {
       method: 'POST',
       body: fd1
     }),
-    fetch(`${API_BASE}/api/analyze`, {
+    fetch(`${API_BASE_URL}/analyze`, {
       method: 'POST',
       body: fd2
     })
