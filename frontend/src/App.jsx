@@ -27,7 +27,7 @@ function TextField({ label, value, onChange, placeholder }) {
     <div className="w-full">
       <label className="text-sm font-medium text-slate-200">{label}</label>
       <input
-        className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-sm text-slate-100 outline-none focus:border-slate-600"
+        className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-sm text-slate-100 outline-none focus:border-slate-600 lg:px-6 lg:py-4"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
@@ -337,10 +337,12 @@ export default function App() {
         <div className="absolute right-[-220px] top-[120px] h-[520px] w-[520px] rounded-full bg-gradient-to-b from-emerald-500/20 to-emerald-500/0 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-5 py-10">
-        <div className="flex gap-6">
-          <Sidebar activeFeature={activeFeature} onFeatureChange={setActiveFeature} />
-          <div className="flex-1">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <div className="w-full lg:w-64 lg:flex-shrink-0">
+            <Sidebar activeFeature={activeFeature} setActiveFeature={setActiveFeature} />
+          </div>
+          <div className="flex-1 min-w-0">
             {activeFeature === 'analyze' && (
               <div>
                 <motion.header
@@ -362,8 +364,8 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="grid gap-4 sm:grid-cols-1">
-                    <div>
+                  <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+                    <div className="sm:col-span-1 lg:col-span-1">
                       <TextField
                         label="Job title"
                         value={jobTitle}
@@ -482,7 +484,7 @@ export default function App() {
                           ) : null}
 
                           {tab === 'skills' ? (
-                            <div className="grid gap-5 lg:grid-cols-2">
+                            <div className="grid gap-5 sm:grid-cols-1 lg:grid-cols-2">
                               <div className="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-4">
                                 <div className="flex items-center justify-between gap-4">
                                   <div className="text-sm font-semibold text-white">Job skills</div>
@@ -507,7 +509,7 @@ export default function App() {
                                 </div>
                               </div>
 
-                              <div className="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-4 lg:col-span-2">
+                              <div className="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-4 sm:col-span-1 lg:col-span-2">
                                 <div className="flex items-center justify-between gap-4">
                                   <div className="text-sm font-semibold text-white">Missing skills</div>
                                   <div className="text-xs font-semibold text-slate-400">{(gaps.missing_skills || []).length}</div>
@@ -524,7 +526,7 @@ export default function App() {
                           ) : null}
 
                           {tab === 'keywords' ? (
-                            <div className="grid gap-5 lg:grid-cols-2">
+                            <div className="grid gap-5 sm:grid-cols-1 lg:grid-cols-2">
                               <div className="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-4">
                                 <div className="flex items-center justify-between gap-4">
                                   <div className="text-sm font-semibold text-white">Job keywords</div>
@@ -545,7 +547,7 @@ export default function App() {
                                 </div>
                               </div>
 
-                              <div className="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-4 lg:col-span-2">
+                              <div className="rounded-2xl border border-white/10 bg-slate-950/25 px-4 py-4 sm:col-span-1 lg:col-span-2">
                                 <div className="flex items-center justify-between gap-4">
                                   <div className="text-sm font-semibold text-white">Missing keywords</div>
                                   <div className="text-xs font-semibold text-slate-400">{(gaps.missing_keywords || []).length}</div>
