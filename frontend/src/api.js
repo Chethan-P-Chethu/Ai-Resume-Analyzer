@@ -1,5 +1,5 @@
 const API_BASE_URL = import.meta.env.PROD 
-  ? '/api'  // In production, use same domain with /api prefix
+  ? 'https://ai-resume-analyzer-ay8x.onrender.com'  // Replace with your actual backend URL
   : 'http://127.0.0.1:8000/api'
 
 export async function analyzeResume({ jobTitle, jobDescription, file }) {

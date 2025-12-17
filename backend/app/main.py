@@ -21,6 +21,7 @@ CORS(
     resources={
         r"/api/*": {
             "origins": [
+                "https://ai-resume-analyzer-frontend-zm8a.onrender.com",  # Replace with actual frontend URL
                 "http://localhost:5173",
                 "http://127.0.0.1:5173",
                 "http://localhost:5174",
